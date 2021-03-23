@@ -123,10 +123,13 @@ window.addEventListener("message", function (e) {
                                 client: "vast",
                                 tag: "https://syndication.exdynsrv.com/splash.php?idzone=4153990"
                             	},
-				"roll": "midRoll",
-                        	"vastTag": "https://syndication.exdynsrv.com/splash.php?idzone=4153990",
-                        	"timer": 5
-                   		 },
+				schedule:{
+               			 adbreak1: {
+               			 offset: "Post",
+                		tag: "https://syndication.exdynsrv.com/splash.php?idzone=4153990"
+                		}
+            			}
+				},
 				"title": episode_title,
 				"description": video_config_media['metadata']['title'],
 				"file": video_stream_url,
