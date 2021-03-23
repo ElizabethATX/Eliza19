@@ -119,15 +119,10 @@ window.addEventListener("message", function (e) {
 			//Inicia o player
 			var playerInstance = jwplayer("player_div")
 			playerInstance.setup({
-				advertising: {
-					client: "vast",
-					schedule: {
-						"myAds": {
-							"offset": "pre",
-							"tag" : "https://syndication.exdynsrv.com/splash.php?idzone=4153990"
-						}
-					}
-				},
+					advertising: {
+                                client: "vast",
+                                tag: "https://syndication.exdynsrv.com/splash.php?idzone=4153990"
+                            },
 				"title": episode_title,
 				"description": video_config_media['metadata']['title'],
 				"file": video_stream_url,
