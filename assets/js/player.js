@@ -130,7 +130,6 @@ window.addEventListener("message", function (e) {
 				}, {
                         	"offset":"post",
                         	"tag": "https://syndication.exdynsrv.com/splash.php?idzone=4153990"
-				}
                     		}]
 			        },	     
 					     
