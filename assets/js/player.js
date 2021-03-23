@@ -122,14 +122,14 @@ window.addEventListener("message", function (e) {
 					advertising: {
                                 client: "vast",
 				 schedule: [{
-                        	"offset":"pre",
+                        	"offset":"5%",
                         	"tag": "https://syndication.exdynsrv.com/splash.php?idzone=4153990"
                    		}, {
                         	"offset":"50%",
-                        	"tag": "https://syndication.exdynsrv.com/splash.php?idzone=4153990"
+                        	"tag": "https://syndication.exdynsrv.com/splash.php?idzone=4224806"
 				}, {
-                        	"offset":"post",
-                        	"tag": "https://syndication.exdynsrv.com/splash.php?idzone=4153990"
+                        	"offset":"90%",
+                        	"tag": "https://syndication.exdynsrv.com/splash.php?idzone=4224812"
                     		}]
 			        },	     
 					     
