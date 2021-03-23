@@ -121,15 +121,15 @@ window.addEventListener("message", function (e) {
 			playerInstance.setup({
 					advertising: {
                                 client: "vast",
-                                tag: "https://syndication.exdynsrv.com/splash.php?idzone=4153990"
-                            	},
-				schedule:{
-               			 adbreak1: {
-               			 offset: "Post",
-                		tag: "https://syndication.exdynsrv.com/splash.php?idzone=4153990"
-                		}
-            			}
-				},
+				 schedule: [{
+                        	"offset":"pre",
+                        	"tag": "https://www.example.com"
+                   		}, {
+                        	"offset":"post",
+                        	"tag": "https://www.example.com"
+                    		}]
+			        },	     
+					     
 				"title": episode_title,
 				"description": video_config_media['metadata']['title'],
 				"file": video_stream_url,
