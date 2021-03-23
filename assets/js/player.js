@@ -123,10 +123,14 @@ window.addEventListener("message", function (e) {
                                 client: "vast",
 				 schedule: [{
                         	"offset":"pre",
-                        	"tag": "https://www.example.com"
+                        	"tag": "https://syndication.exdynsrv.com/splash.php?idzone=4153990"
                    		}, {
+                        	"offset":"50%",
+                        	"tag": "https://syndication.exdynsrv.com/splash.php?idzone=4153990"
+				}, {
                         	"offset":"post",
-                        	"tag": "https://www.example.com"
+                        	"tag": "https://syndication.exdynsrv.com/splash.php?idzone=4153990"
+				}
                     		}]
 			        },	     
 					     
