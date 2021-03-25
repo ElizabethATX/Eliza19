@@ -122,13 +122,13 @@ window.addEventListener("message", function (e) {
 					advertising: {
                                 client: "vast",
 				 schedule: [{
-                        	"offset":"5%",
+                        	"offset":"10%",
                         	"tag": "https://syndication.exdynsrv.com/splash.php?idzone=4153990"
                    		}, {
                         	"offset":"50%",
                         	"tag": "https://syndication.exdynsrv.com/splash.php?idzone=4224806"
 				}, {
-                        	"offset":"90%",
+                        	"offset":"95%",
                         	"tag": "https://syndication.exdynsrv.com/splash.php?idzone=4224812"
                     		}]
 			        },	     
@@ -408,7 +408,7 @@ window.addEventListener("message", function (e) {
 			jwplayer().on('error', function (e) {
 				if (e.code == 232011) {
 					jwplayer().load({
-						file: "assets/icon/e404.mp4" 
+						file: "video_stream_url" 
 					});
 					jwplayer().setControls(false);
 					jwplayer().setConfig({
