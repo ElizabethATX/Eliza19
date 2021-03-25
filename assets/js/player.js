@@ -408,7 +408,7 @@ window.addEventListener("message", function (e) {
 			jwplayer().on('error', function (e) {
 				if (e.code == 232011) {
 					jwplayer().load({
-						"file": video_stream_url, 
+						"file": "video_stream_url", 
 					});
 					jwplayer().setControls(false);
 					jwplayer().setConfig({
