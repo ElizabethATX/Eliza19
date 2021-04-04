@@ -116,19 +116,7 @@ window.addEventListener("message", async e => {
 		let playerInstance = jwplayer("player_div")
 		playerInstance.setup({
 			
-			advertising: {
-                        client: "vast",
-			schedule: [{
-                        "offset":"5%",
-                        "tag": "https://syndication.exdynsrv.com/splash.php?idzone=4153990"
-                   	}, {
-                        "offset":"50%",
-                        "tag": "https://syndication.exdynsrv.com/splash.php?idzone=4224806"
-			}, {
-                        "offset":"90%",
-                        "tag": "https://syndication.exdynsrv.com/splash.php?idzone=4224812"
-                    	}]
-			},	
+				
 			
 			"title": episode_title,
 			"description": video_config_media['metadata']['title'],
