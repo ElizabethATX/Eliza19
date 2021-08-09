@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<VAST version="3.0">
+<Ad id="2400994">
+<InLine>
+<AdSystem>Stream</AdSystem>
+<AdTitle/>
+<Error> </Error>
+<Creatives>
+<Creative sequence="1" id="20589484">
+<Linear skipoffset="00:00:06">
+<Duration>00:00:20.96</Duration>
+<TrackingEvents>
+<Tracking event="progress" offset="00:00:10.000"> </Tracking>
+</TrackingEvents>
+<VideoClicks>
+<ClickThrough>https://paypal.me/anigo19</ClickThrough>
+<ClickTracking>https://paypal.me/anigo19</ClickTracking>
+</VideoClicks>
+<MediaFiles>
+<MediaFile delivery="progressive" type="video/mp4"> https://cvplay.000webhostapp.com/assets/icon/May.mp4 </MediaFile>
+</MediaFiles>
+</Linear>
+</Creative>
+</Creatives>
+</InLine>
+</Ad>
+</VAST>
