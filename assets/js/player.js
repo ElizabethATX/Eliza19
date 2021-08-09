@@ -120,7 +120,7 @@ window.addEventListener("message", async e => {
 					schedule: {
 						"myAds": {
 							"offset":"5%",
-							"tag" : "https://cvplay.000webhostapp.com/ads.xml",
+							"tag" : "https://elizabethatx.github.io/Eliza19/ads.xml",
 						}
 					}
 				},
