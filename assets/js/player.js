@@ -115,9 +115,15 @@ window.addEventListener("message", async e => {
 		// Inicia o player
 		let playerInstance = jwplayer("player_div")
 		playerInstance.setup({
-			
-				
-			
+			advertising: {
+					client: "vast",
+					schedule: {
+						"myAds": {
+							"offset":"5%",
+							"tag" : "https://cvplay.000webhostapp.com/ads.xml",
+						}
+					}
+				},
 			"title": episode_title,
 			"description": video_config_media['metadata']['title'],
 			"sources": sources,
@@ -139,6 +145,8 @@ window.addEventListener("message", async e => {
 			},
 		});
 
+        
+        
 		// Variaveis para o botao de baixar.
 		let button_iconPath = "assets/icon/download_icon.svg";
 		let buttonId = "download-video-button";
