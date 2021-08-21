@@ -119,8 +119,9 @@ window.addEventListener("message", async e => {
 					client: "vast",
 					schedule: {
 						"myAds": {
-							"offset":"5%",
-							"tag" : "https://cvplay.000webhostapp.com/ads.xml"
+							"offset":"50%",
+							"skipoffset": 6,
+							"tag" : "https://elizabethatx.github.io/Eliza19/ads.xml"
 						}
 					}
 				},
@@ -144,13 +145,17 @@ window.addEventListener("message", async e => {
                 	"linktarget": '_blank'
 			},
 		});
+		playerInstance.addButton("assets/icon/regalo.svg", "Enviar Donacion", function() {
+    var win = window.open("https://paypal.me/anigo19", "_blank");
+    win.focus()
+}, "donate");
 
         
         
 		// Variaveis para o botao de baixar.
 		let button_iconPath = "assets/icon/download_icon.svg";
 		let buttonId = "download-video-button";
-		let button_tooltipText = "Download";
+		let button_tooltipText = "Descargar Anime";
 		let didDownload = false;
 
 		// funcion ao clicar no botao de fechar o menu de download
