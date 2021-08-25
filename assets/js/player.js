@@ -121,7 +121,7 @@ window.addEventListener("message", async e => {
 						"myAds": {
 							"offset":"50%",
 							"skipoffset": 6,
-							"tag" : "https://elizabethatx.github.io/Eliza19/ads.xml"
+							"tag" : "http://comentariosweb.rf.gd/ads.xml"
 						}
 					}
 				},
