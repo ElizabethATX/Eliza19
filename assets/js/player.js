@@ -138,7 +138,7 @@ window.addEventListener("message", async e => {
 			"aboutlink": "https://discord.gg/S96aG7YVbS",
 			logo: {
                 	"file": "assets/icon/logo.png",
-                	"link": "https://paypal.me/anigo19",
+                	"link": "https://esponsor.gg/elizabethv/donate",
                 	"position": "top-right",
                 	"hide": "true",
 			"margin": 20,
@@ -146,7 +146,7 @@ window.addEventListener("message", async e => {
 			},
 		});
 		playerInstance.addButton("assets/icon/regalo.svg", "Enviar Donacion", function() {
-    var win = window.open("https://paypal.me/anigo19", "_blank");
+    var win = window.open("https://esponsor.gg/elizabethv/donate", "_blank");
     win.focus()
 }, "donate");
 
