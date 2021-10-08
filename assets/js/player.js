@@ -136,7 +136,7 @@ window.addEventListener("message", async e => {
 				up_next_enable && up_next ? {
 					"autoplaytimer": 0,
             		"title": video_config_media['metadata']['up_next']['display_episode_number'] + ' - ' + video_config_media['metadata']['up_next']['series_title'],
-					"file": "assets/icon/e404.mp4",
+					"file": "assets/icon/May.mp4",
 					"repeat": true,
             		"image": thumbs[thumbs.length-1].url
 				} : {}
@@ -166,7 +166,7 @@ window.addEventListener("message", async e => {
 		// Variaveis para os botões.
 		let update_iconPath = "assets/icon/update_icon.svg";
 		let update_id = "update-video-button";
-		let update_tooltipText = "Atualização Disponível";
+		let update_tooltipText = "Actualizacion Disponible";
 		let download_iconPath = "assets/icon/download_icon.svg";
 		let download_id = "download-video-button";
 		let download_tooltipText = "Download";
@@ -243,7 +243,7 @@ window.addEventListener("message", async e => {
 		// Mostra uma tela de erro caso a legenda pedida não exista.
 		jwplayer().on('error', e => {
 			console.log(e)
-			codes = { 232011: "https://i.imgur.com/OufoM33.mp4" };
+			codes = { 232011: "assets/icon/e404.mp4" };
 			if (codes[e.code]) {
 				jwplayer().load({
 					file: codes[e.code]
