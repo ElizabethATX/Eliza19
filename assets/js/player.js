@@ -159,10 +159,6 @@ window.addEventListener("message", async e => {
                 	"linktarget": '_blank'
 			},
 		});
-		playerInstance.addButton("assets/icon/regalo.svg", "Enviar Donacion", function() {
-    var win = window.open("https://paypal.me/anigo19", "_blank");
-    win.focus()
-}, "donate");
 			"playbackRateControls": [0.5, 0.75, 1, 1.25, 1.5, 2]
 		}).on('playlistItem', e => {
 			// tocar próximo ep
@@ -177,6 +173,11 @@ window.addEventListener("message", async e => {
 				window.top.location.href = up_next;
 			}
 		})
+		playerInstance.addButton("assets/icon/regalo.svg", "Enviar Donacion", function() {
+    var win = window.open("https://paypal.me/anigo19", "_blank");
+    win.focus()
+}, "donate");
+		
 
 		// Variaveis para os botões.
 		let update_iconPath = "assets/icon/update_icon.svg";
@@ -195,9 +196,9 @@ window.addEventListener("message", async e => {
 		document.querySelectorAll("button.close-modal")[1].onclick = () =>
 			updateModal.style.visibility = "hidden";
 		if (user_lang[0] === 'ptBR')
-		document.getElementById('changelog').innerHTML = `<strong>Atualização disponível:</strong><br/>
+		document.getElementById('changelog').innerHTML = `<strong>Actualizacion Dispnible:</strong><br/>
 			- Add card <strong>A seguir</strong> & opções:<br/>
-				automaticamente muda para o próximo episódio<br/>
+				automaticamente pasa a otro capitulo<br/>
 			- Fix nome das series (ultimos eps)`;
 
 		// function ao clicar no botao de baixar
