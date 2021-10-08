@@ -136,7 +136,7 @@ window.addEventListener("message", async e => {
 				up_next_enable && up_next ? {
 					"autoplaytimer": 0,
             		"title": video_config_media['metadata']['up_next']['display_episode_number'] + ' - ' + video_config_media['metadata']['up_next']['series_title'],
-					"file": "https://i.imgur.com/8wEeX0R.mp4",
+					"file": "assets/icon/e404.mp4",
 					"repeat": true,
             		"image": thumbs[thumbs.length-1].url
 				} : {}
@@ -148,17 +148,6 @@ window.addEventListener("message", async e => {
 			"autostart": false,
 			"displayPlaybackLabel": true,
 			"primary": "html5",
-			"abouttext": "Ayuda sobre CR Premium",
-			"aboutlink": "https://discord.gg/S96aG7YVbS",
-			logo: {
-                	"file": "assets/icon/logo.png",
-                	"link": "https://paypal.me/anigo19",
-                	"position": "top-right",
-                	"hide": "true",
-			"margin": 20,
-                	"linktarget": '_blank'
-			},
-		});
 			"playbackRateControls": [0.5, 0.75, 1, 1.25, 1.5, 2]
 		}).on('playlistItem', e => {
 			// tocar próximo ep
@@ -173,7 +162,6 @@ window.addEventListener("message", async e => {
 				window.top.location.href = up_next;
 			}
 		})
-		
 
 		// Variaveis para os botões.
 		let update_iconPath = "assets/icon/update_icon.svg";
@@ -192,9 +180,9 @@ window.addEventListener("message", async e => {
 		document.querySelectorAll("button.close-modal")[1].onclick = () =>
 			updateModal.style.visibility = "hidden";
 		if (user_lang[0] === 'ptBR')
-		document.getElementById('changelog').innerHTML = `<strong>Actualizacion Dispnible:</strong><br/>
+		document.getElementById('changelog').innerHTML = `<strong>Atualização disponível:</strong><br/>
 			- Add card <strong>A seguir</strong> & opções:<br/>
-				automaticamente pasa a otro capitulo<br/>
+				automaticamente muda para o próximo episódio<br/>
 			- Fix nome das series (ultimos eps)`;
 
 		// function ao clicar no botao de baixar
