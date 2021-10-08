@@ -173,10 +173,6 @@ window.addEventListener("message", async e => {
 				window.top.location.href = up_next;
 			}
 		})
-		playerInstance.addButton("assets/icon/regalo.svg", "Enviar Donacion", function() {
-    var win = window.open("https://paypal.me/anigo19", "_blank");
-    win.focus()
-}, "donate");
 		
 
 		// Variaveis para os botões.
