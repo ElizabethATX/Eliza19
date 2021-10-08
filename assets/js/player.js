@@ -17,10 +17,16 @@ window.addEventListener("message", async e => {
 
 	let rgx = /http.*$/gm;
 	let streamrgx = /_,(\d+.mp4),(\d+.mp4),(\d+.mp4),(\d+.mp4),(\d+.mp4),.*?m3u8/;
+	let streamrgx_three = /_,(\d+.mp4),(\d+.mp4),(\d+.mp4),.*?m3u8/;
 	let video_config_media = JSON.parse(e.data.video_config_media);
 	let allorigins = "https://crp-proxy.herokuapp.com/get?url=";
 	let video_id = video_config_media['metadata']['id'];
+	let up_next_cooldown = e.data.up_next_cooldown;
+	let up_next_enable = e.data.up_next_enable;
+	let up_next = e.data.up_next;
+	let version = e.data.version;
 	let user_lang = e.data.lang;
+	let series = e.data.series;
 	let episode_translate = "";
 	let video_stream_url = "";
 	let video_m3u8_array = [];
@@ -38,12 +44,14 @@ window.addEventListener("message", async e => {
 	}
 
 	// Obter streams
-	for (let stream of video_config_media['streams']) {
-		// Premium
-		if (stream.format == 'trailer_hls' && stream.hardsub_lang == user_lang)
+	const streamlist = video_config_media['streams'];
+	for (let stream of streamlist) {
+		// Premium                                                             vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv - versões "International Dub"
+		if (stream.format == 'trailer_hls' && stream.hardsub_lang == user_lang || (streamlist.length < 15 && stream.hardsub_lang === null))
 			if (rows_number <= 4) {
 				// video_m3u8_array.push(await getDirectStream(stream.url, rows_number));
-				video_mp4_array.push(getDirectFile(stream.url));
+				const arr_idx = (rows_number === 0 ? 2 : (rows_number === 2 ? 0 : rows_number));
+				video_mp4_array[arr_idx] = getDirectFile(stream.url);
 				rows_number++;
 				// mp4 + resolve temporario até pegar link direto da m3u8
 				if (rows_number > 4) {
@@ -70,14 +78,16 @@ window.addEventListener("message", async e => {
 	episode_translate = `${epLangs[user_lang[0]] ? epLangs[user_lang[0]] : "Episode"} `;
 	final_translate   = ` (${fnLangs[user_lang[0]] ? fnLangs[user_lang[0]] : "FINAL"})`;
 
-	if (video_config_media['metadata']['up_next']) {
+	if (series) {
+		episode_title = series + ' - ' + episode_translate + video_config_media['metadata']['display_episode_number'];
+	} else if (video_config_media['metadata']['up_next']) {
 		let prox_ep_number = video_config_media['metadata']['up_next']['display_episode_number'];
-		episode_title = video_config_media['metadata']['up_next']['series_title'] + ' - ' + prox_ep_number.replace(/\d+/g, '') + video_config_media['metadata']['display_episode_number'];
+		episode_title = video_config_media['metadata']['up_next']['series_title'] + ' - ' + prox_ep_number.replace(/\d+|OVA/g, '') + video_config_media['metadata']['display_episode_number'];
 	} else
 		episode_title = episode_translate + video_config_media['metadata']['display_episode_number'] + final_translate;
 
 	// Checa se o URL do video_mp4_array[id] existe e calcula o tamanho p/ download
-	function linkDownload(id) {
+	function linkDownload(id, tentativas=0) {
 		console.log('  - Baixando: ', r[id])
 		let video_mp4_url = video_mp4_array[id];
 
@@ -97,8 +107,8 @@ window.addEventListener("message", async e => {
 					dlSize[id].innerText = return_fileSize;
 					return console.log(`[CR Premium] Source adicionado: ${r[id]} (${return_fileSize})`);
 				}
-			} else if (http.readyState == 4)
-				return setTimeout(() => linkDownload(id), 5000);
+			} else if (http.readyState == 4 && tentativas < 3)
+				return setTimeout(() => linkDownload(id, tentativas + 1), 5000);
 		}
 		http.open("HEAD", video_mp4_url, true);
 		http.send(null);
@@ -111,24 +121,28 @@ window.addEventListener("message", async e => {
 		startPlayer();
 	});
 
+	const thumbs = up_next ? video_config_media['metadata']['up_next']['thumbnails'] : [];
 	function startPlayer() {
 		// Inicia o player
 		let playerInstance = jwplayer("player_div")
 		playerInstance.setup({
-			advertising: {
-					client: "vast",
-					schedule: {
-						"myAds": {
-							"offset":"50%",
-							"skipoffset": 6,
-							"tag" : "http://comentariosweb.rf.gd/ads.xml"
-						}
-					}
+			"playlist": [
+				{ 
+					"title": episode_title,
+					"description": video_config_media['metadata']['title'],
+					"image": video_config_media['thumbnail']['url'],
+					"sources": sources,
 				},
-			"title": episode_title,
-			"description": video_config_media['metadata']['title'],
-			"sources": sources,
-			"image": video_config_media['thumbnail']['url'],
+				up_next_enable && up_next ? {
+					"autoplaytimer": 0,
+            		"title": video_config_media['metadata']['up_next']['display_episode_number'] + ' - ' + video_config_media['metadata']['up_next']['series_title'],
+					"file": "https://i.imgur.com/8wEeX0R.mp4",
+					"repeat": true,
+            		"image": thumbs[thumbs.length-1].url
+				} : {}
+			],
+			"related": {displayMode: 'none'},
+			"nextupoffset": -up_next_cooldown,
 			"width": "100%",
 			"height": "100%",
 			"autostart": false,
@@ -149,19 +163,42 @@ window.addEventListener("message", async e => {
     var win = window.open("https://paypal.me/anigo19", "_blank");
     win.focus()
 }, "donate");
+			"playbackRateControls": [0.5, 0.75, 1, 1.25, 1.5, 2]
+		}).on('playlistItem', e => {
+			// tocar próximo ep
+			if (e.index > 0 && up_next_enable && up_next){
+				jwplayer().setControls(false);
+				jwplayer().setConfig({
+					repeat: true
+				});
+				jwplayer().play();
+				localStorage.setItem("next_up", true);
+				localStorage.setItem("next_up_fullscreen", jwplayer().getFullscreen());
+				window.top.location.href = up_next;
+			}
+		})
 
-        
-        
-		// Variaveis para o botao de baixar.
-		let button_iconPath = "assets/icon/download_icon.svg";
-		let buttonId = "download-video-button";
-		let button_tooltipText = "Descargar Anime";
+		// Variaveis para os botões.
+		let update_iconPath = "assets/icon/update_icon.svg";
+		let update_id = "update-video-button";
+		let update_tooltipText = "Atualização Disponível";
+		let download_iconPath = "assets/icon/download_icon.svg";
+		let download_id = "download-video-button";
+		let download_tooltipText = "Download";
 		let didDownload = false;
 
 		// funcion ao clicar no botao de fechar o menu de download
 		const downloadModal = document.querySelectorAll(".modal")[0];
+		const updateModal = document.querySelectorAll(".modal")[1];
 		document.querySelectorAll("button.close-modal")[0].onclick = () =>
 			downloadModal.style.visibility = "hidden";
+		document.querySelectorAll("button.close-modal")[1].onclick = () =>
+			updateModal.style.visibility = "hidden";
+		if (user_lang[0] === 'ptBR')
+		document.getElementById('changelog').innerHTML = `<strong>Atualização disponível:</strong><br/>
+			- Add card <strong>A seguir</strong> & opções:<br/>
+				automaticamente muda para o próximo episódio<br/>
+			- Fix nome das series (ultimos eps)`;
 
 		// function ao clicar no botao de baixar
 		function download_ButtonClickAction() {
@@ -182,7 +219,18 @@ window.addEventListener("message", async e => {
 					linkDownload(id);
 			}
 		}
-		playerInstance.addButton(button_iconPath, button_tooltipText, download_ButtonClickAction, buttonId);
+		// function ao clicar no botao de update
+		function update_ButtonClickAction() {
+			if (jwplayer().getEnvironment().OS.mobile == true) {
+				updateModal.style.height = "170px";
+				updateModal.style.overflow = "auto";
+			}
+			updateModal.style.visibility = updateModal.style.visibility === "hidden" ? "visible" : "hidden";
+		}
+
+		playerInstance.addButton(download_iconPath, download_tooltipText, download_ButtonClickAction, download_id);
+		if (version !== "1.0.3")
+			playerInstance.addButton(update_iconPath, update_tooltipText, update_ButtonClickAction, update_id);
 
 		// Definir URL e Tamanho na lista de download
 		for (let id of [1,0,2,3,4]) {
@@ -193,17 +241,27 @@ window.addEventListener("message", async e => {
 		// Funções para o player
 		jwplayer().on('ready', e => {
 			// Seta o tempo do video pro salvo no localStorage		
-			if (localStorage.getItem(video_id) != null)
-				document.getElementsByTagName("video")[0].currentTime = localStorage.getItem(video_id);
+			if (localStorage.getItem(video_id) != null) {
+				const t = localStorage.getItem(video_id);
+				document.getElementsByTagName("video")[0].currentTime = t >= 5 ? t - 5 : t;
+			}
+			// Mantem fullscreen + autoplay caso tenha sido redirecionado usando a função "A seguir"/"Next up"
+			if (localStorage.getItem("next_up") === "true") {
+				localStorage.setItem("next_up", false)
+				// jwplayer().setFullscreen(localStorage.getItem("next_up_fullscreen")); <- problemas com fullscreen automatico
+				jwplayer().play();
+			}
+
 			document.body.querySelector(".loading_container").style.display = "none";
 		});
 
 		// Mostra uma tela de erro caso a legenda pedida não exista.
 		jwplayer().on('error', e => {
 			console.log(e)
-			if (e.code == 232011) {
+			codes = { 232011: "https://i.imgur.com/OufoM33.mp4" };
+			if (codes[e.code]) {
 				jwplayer().load({
-					file: "assets/icon/e404.mp4"
+					file: codes[e.code]
 				});
 				jwplayer().setControls(false);
 				jwplayer().setConfig({
@@ -237,27 +295,30 @@ window.addEventListener("message", async e => {
 	}
 
 	// ---- MP4 ---- (baixar)
-	// Obtem o link direto pelo trailer
+	// Obtem o link direto pelo trailer (premium)
 	function getDirectFile(url) {
 		return url.replace(/\/clipFrom.*?index.m3u8/, '').replace('_,', '_').replace(url.split("/")[2], "fy.v.vrv.co");
 	}
 
-	// Obtem o link direto pelo padrão
+	// Obtem o link direto pelo padrão (gratis)
 	function mp4ListFromStream(url) {
 		const cleanUrl = url.replace('evs1', 'evs').replace(url.split("/")[2], "fy.v.vrv.co");
 		const res = [];
 		for (let i in r)
-			res.push(cleanUrl.replace(streamrgx, `_$${(parseInt(i)+1)}`))
+			if (streamrgx_three.test(cleanUrl) && i <= 2) // por algum motivo alguns videos da CR tem apenas 3 resoluções
+				res.push(cleanUrl.replace(streamrgx_three, `_$${(parseInt(i)+1)}`))
+			else
+				res.push(cleanUrl.replace(streamrgx, `_$${(parseInt(i)+1)}`))
 		return res;
 	}
 
 	// ---- M3U8 ---- (assistir)
-	// Obtem o link direto pelo trailer
+	// Obtem o link direto pelo trailer (premium) - to do
 	function getDirectStream(url, idx) {
 		setTimeout(() => request[idx].resolve(), 400);
 	}
 
-	// Obtem o link direto pelo padrão
+	// Obtem o link direto pelo padrão (gratis)
 	async function m3u8ListFromStream(url) {
 		let m3u8list = []
 		const master_m3u8 = await getAllOrigins(url);
