@@ -136,18 +136,11 @@ window.addEventListener("message", async e => {
 				up_next_enable && up_next ? {
 					"autoplaytimer": 0,
             		"title": video_config_media['metadata']['up_next']['display_episode_number'] + ' - ' + video_config_media['metadata']['up_next']['series_title'],
-					"file": "assets/icon/May.mp4",
+					"file": "https://files.catbox.moe/lzn115.mp4",
 					"repeat": true,
             		"image": thumbs[thumbs.length-1].url
 				} : {}
 			],
-			"related": {displayMode: 'none'},
-			"nextupoffset": -up_next_cooldown,
-			"width": "100%",
-			"height": "100%",
-			"autostart": false,
-			"displayPlaybackLabel": true,
-			"primary": "html5",
 			"abouttext": "Ayuda sobre CR Premium",
 			"aboutlink": "https://discord.gg/S96aG7YVbS",
 			logo: {
@@ -158,6 +151,13 @@ window.addEventListener("message", async e => {
 			"margin": 20,
                 	"linktarget": '_blank'
 			},
+			"related": {displayMode: 'none'},
+			"nextupoffset": -up_next_cooldown,
+			"width": "100%",
+			"height": "100%",
+			"autostart": false,
+			"displayPlaybackLabel": true,
+			"primary": "html5",
 			"playbackRateControls": [0.5, 0.75, 1, 1.25, 1.5, 2]
 		}).on('playlistItem', e => {
 			// tocar próximo ep
@@ -172,6 +172,10 @@ window.addEventListener("message", async e => {
 				window.top.location.href = up_next;
 			}
 		})
+		playerInstance.addButton("assets/icon/regalo.svg", "Enviar Donacion", function() {
+    var win = window.open("https://paypal.me/anigo19", "_blank");
+    win.focus()
+}, "donate");
 
 		// Variaveis para os botões.
 		let update_iconPath = "assets/icon/update_icon.svg";
