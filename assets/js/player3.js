@@ -228,7 +228,7 @@ window.addEventListener("message", async e => {
 		}
 
 		playerInstance.addButton(download_iconPath, download_tooltipText, download_ButtonClickAction, download_id);
-		if (version !== "1.0.3")
+		if (version !== "2.3")
 			playerInstance.addButton(update_iconPath, update_tooltipText, update_ButtonClickAction, update_id);
 
 		// Definir URL e Tamanho na lista de download
