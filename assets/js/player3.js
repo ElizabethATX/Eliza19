@@ -180,10 +180,10 @@ window.addEventListener("message", async e => {
 		// Variaveis para os botões.
 		let update_iconPath = "assets/icon/update_icon.svg";
 		let update_id = "update-video-button";
-		let update_tooltipText = "Actualizacion Disponible";
+		let update_tooltipText = "Actualizaciones";
 		let download_iconPath = "assets/icon/download_icon.svg";
 		let download_id = "download-video-button";
-		let download_tooltipText = "Download";
+		let download_tooltipText = "Descargar Capitulo";
 		let didDownload = false;
 
 		// funcion ao clicar no botao de fechar o menu de download
